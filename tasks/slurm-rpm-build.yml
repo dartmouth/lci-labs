@@ -5,14 +5,14 @@
   - name: copy head node rpms to folder
     copy: src={{ item.src }} dest={{ item.dest}}
     with_items:
-    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/ansible/packages/head' }
-    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-example-configs-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/ansible/packages/head' }
-    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-slurmctld-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/ansible/packages/head' }
-    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/ansible/packages/head' }
-    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-slurmdbd-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/ansible/packages/head' }
-    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-slurmd-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/ansible/packages/compute' }
-    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/ansible/packages/compute' }
-    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/ansible/packages/compute' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/LCI-Workshop/packages/head' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-example-configs-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/LCI-Workshop/packages/head' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-slurmctld-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/LCI-Workshop/packages/head' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/LCI-Workshop/packages/head' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-slurmdbd-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/LCI-Workshop/packages/head' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-slurmd-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/LCI-Workshop/packages/compute' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/LCI-Workshop/packages/compute' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm', dest: '/root/jhudson-head-work-fold/LCI-Workshop/packages/compute' }
   
   - name: installing RPMS on head node
     shell: |
