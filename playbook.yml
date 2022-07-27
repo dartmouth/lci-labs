@@ -3,6 +3,9 @@
   become: yes
   hosts: head
   tasks:
+    
+  - name: Step 1 Configure EPEL repo
+    include_tasks: tasks/epel.yml
 
   - name: Step 1 Install head node packages & enable powertools repo
     include_tasks: tasks/head-node-pkgs.yml
