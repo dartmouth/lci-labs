@@ -1,0 +1,37 @@
+---
+- hosts: all_nodes
+
+  tasks:
+  - name: Copy compute node RPMs
+    ansible.builtin.copy: src={{ item.src }} dest={{ item.dest}}
+    with_items:
+    - { src: '/etc/slurm/slurm.conf', dest: '/etc/slurm/' }
+    - { src: '/root/jhudson-head-work-fold/ansible/packages/compute/slurm-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
+    - { src: '/root/jhudson-head-work-fold/ansible/packages/compute/slurm-perlapi-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
+    - { src: '/root/jhudson-head-work-fold/ansible/packages/compute/slurm-slurmd-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
+
+  - name: Install compute node RPMs
+    ansible.builtin.dnf:
+      name: /tmp/slurm-22.05.2-1.el8.x86_64.rpm,/tmp/slurm-perlapi-22.05.2-1.el8.x86_64.rpm,/tmp/slurm-slurmd-22.05.2-1.el8.x86_64.rpm
+      disable_gpg_check: yes
+      state: present
+
+  - name: Create & change ownership of /etc/slurm/
+    file:
+      path: /etc/slurm
+      state: directory
+      owner: root
+      group: root
+      mode: 0544
+
+  - name: Copy slurm.conf file into place
+    ansible.builtin.copy: src=/etc/slurm/slurm.conf dest=/etc/slurm/slurm.conf
+
+  - name: Copy slurm.conf file into place
+    ansible.builtin.copy: src=/etc/slurm/cgroup.conf dest=/etc/slurm/cgroup.conf
+
+  - name: Restart slurmd service
+    ansible.builtin.service:
+     name: slurmd
+     enabled: yes
+     state: restarted

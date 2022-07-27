@@ -1,0 +1,8 @@
+  - name: Powertools repo
+    ansible.builtin.command:
+      cmd: dnf config-manager --set-enabled powertools
+
+  - name: Compute node packages
+    ansible.builtin.dnf:
+      name: pam-devel,perl,perl-DBI,openssl-devel,readline-devel,mariadb-devel
+      state: latest

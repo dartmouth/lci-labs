@@ -1,0 +1,13 @@
+---
+- hosts: all_nodes
+
+  tasks:
+
+  - name: Enable the powertools repo
+    ansible.builtin.command:
+      cmd: dnf config-manager --set-enabled powertools
+
+  - name: Set of RPM packages for compute nodes
+    ansible.builtin.dnf:
+      name: pam-devel,perl,perl-DBI,openssl-devel,readline-devel,mariadb-devel
+      state: latest

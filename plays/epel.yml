@@ -1,0 +1,8 @@
+---
+- hosts: all_nodes
+
+  tasks:
+  - name: Install the EPEL repo
+    ansible.builtin.dnf:
+      name: epel-release
+      state: latest

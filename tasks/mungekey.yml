@@ -1,0 +1,17 @@
+  - name: Install Munge (needed for authentication)
+    ansible.builtin.dnf:
+      name: munge,munge-libs,munge-devel
+      state: latest
+
+  - name: Copy mungekey with owner and permissions
+    ansible.builtin.copy:
+     src: /etc/munge/munge.key
+     dest: /etc/munge/
+     owner: munge
+     mode: '0600'
+    notify:
+
+  - name: Restart munge service after munge.key has been copied
+    ansible.builtin.service:
+     name: munge
+     state: restarted
