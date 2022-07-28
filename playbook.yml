@@ -4,19 +4,22 @@
   hosts: head
   tasks:
 
-  - name: Step 1 Install head node packages & enable powertools repo
+  - name: Step 1 Configure EPEL repo
+    include_tasks: tasks/epel.yml
+
+  - name: Step 2 Install head node packages & enable powertools repo
     include_tasks: tasks/head-node-pkgs.yml
 
-  - name: Step 2 Setup slurm user & groups on head node
+  - name: Step 3 Setup munge
+    include_tasks: tasks/munge-key-creation.yml
+
+  - name: Step 4 Setup slurm user & groups on head node
     include_tasks: tasks/slurm-user.yml
   
-  - name: Step 3 Setup slurm log file & ownership on headnode
+  - name: Step 5 Setup slurm log file & ownership on headnode
     include_tasks: tasks/slurm-logs.yml
 
-  - name: Step 4 Setup munge
-    include_tasks: tasks/munge.yml
-
-  - name: Step 5 Build slurm rpms and install on headnode
+  - name: Step 6 Build slurm rpms and install on headnode
     include_tasks: tasks/slurm-rpm-build.yml
 
 - name: Compute node configuration
@@ -31,7 +34,7 @@
     include_tasks: tasks/compute-node-pkgs.yml
 
   - name: Step 3 Install munge, sync key, and restart services
-    include_tasks: tasks/mungekey.yml
+    include_tasks: tasks/munge-key-sync.yml
 
   - name: Step 4 Setup slurm user & group
     include_tasks: tasks/slurm-user.yml

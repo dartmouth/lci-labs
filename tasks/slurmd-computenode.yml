@@ -2,9 +2,9 @@
     ansible.builtin.copy: src={{ item.src }} dest={{ item.dest}}
     with_items:
     - { src: '/etc/slurm/slurm.conf', dest: '/etc/slurm/' }
-    - { src: '/root/jhudson-head-work-fold/LCI-Workshop/packages/compute/slurm-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
-    - { src: '/root/jhudson-head-work-fold/LCI-Workshop/packages/compute/slurm-perlapi-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
-    - { src: '/root/jhudson-head-work-fold/LCI-Workshop/packages/compute/slurm-slurmd-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
+    - { src: '/root/rpmbuild/RPMS/x86_64/slurm-slurmd-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
 
   - name: Install compute node RPMs
     ansible.builtin.dnf:

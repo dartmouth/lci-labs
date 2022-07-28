@@ -18,13 +18,6 @@
       group: slurm
       mode: 0755
 
-  - name: Create /var/spool/slurm/cluster_state directory
-    file:
-      path: /var/spool/slurm/cluster_state
-      state: directory
-      owner: slurm
-      group: slurm  
-
   - name: Creating the slurmctld log file
     ansible.builtin.file:
       path: /var/log/slurmctld
@@ -45,3 +38,12 @@
       state: touch
       owner: slurm
       group: slurm
+
+  - name: ensure file exists
+    copy:
+      content: ""
+      dest: /etc/nologin
+      force: no
+      group: slurm
+      owner: slurm
+      mode: 0555
