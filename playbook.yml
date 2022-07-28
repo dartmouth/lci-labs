@@ -3,6 +3,9 @@
   become: yes
   hosts: head
   tasks:
+    
+  - name: Step 1 Configure EPEL repo
+    include_tasks: tasks/epel.yml
 
   - name: Step 1 Configure EPEL repo
     include_tasks: tasks/epel.yml
