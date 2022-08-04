@@ -1,0 +1,13 @@
+  - name: Give secure permissions back to /etc/munge/munge.key
+    ansible.builtin.file:
+      path: /etc/munge/munge.key
+      owner: munge
+      group: munge
+      mode: '0400'
+
+  - name: Give secure permissions back to /etc/munge
+    ansible.builtin.file:
+      path: /etc/munge
+      owner: munge
+      group: munge
+      mode: '0700'

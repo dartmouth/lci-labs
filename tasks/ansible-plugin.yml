@@ -1,0 +1,3 @@
+  - name: Enable the ansible module community.myqsl needed for db creation
+    ansible.builtin.command:
+      cmd: ansible-galaxy collection install community.mysql

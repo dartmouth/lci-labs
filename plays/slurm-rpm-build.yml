@@ -1,38 +1,9 @@
 ---
-- hosts: localhost
+- hosts: head
 
   tasks:
-#  - name: build slurm rpms
-#    ansible.builtin.command:
-#      cmd: rpmbuild -ta  /root/jhudson-head-work-fold/slurm-22.05.2.tar.bz2 --with mysql
 
-  - name: installing RPMS on head node
-    shell: |
-      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm   
-      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-example-configs-22.05.2-1.el8.x86_64.rpm  
-      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-slurmctld-22.05.2-1.el8.x86_64.rpm   
-      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-slurmdbd-22.05.2-1.el8.x86_64.rpm   
-      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm   
-
-  - name: Rename slurm.conf.example to slurm.conf
-    ansible.builtin.copy: src=/etc/slurm/slurm.conf.example dest=/etc/slurm/slurm.conf
-
-  - name: Rename cgroups.conf.example to cgroups.conf
-    ansible.builtin.copy: src=/etc/slurm/cgroup.conf.example dest=/etc/slurm/cgroup.conf
-
-  - name: Customize slurm.conf with slurmctld host
-    ansible.builtin.replace:
-      path: /etc/slurm/slurm.conf
-      regexp: '^SlurmctldHost=.*$'
-      replace: 'SlurmctldHost=head'
-
-  - name: Customize slurm.conf with compute node
-    ansible.builtin.replace:
-      path: /etc/slurm/slurm.conf
-      regexp: '^NodeName=.*$'
-      replace: 'NodeName=compute[1-4] CPUs=2 Boards=1 SocketsPerBoard=1 CoresPerSocket=2 ThreadsPerCore=1 RealMemory=3731'
-
-  - name: Restart / Start slurmctld
-    ansible.builtin.service:
-     name: slurmctld
-     state: restarted
+  - name: Copy mariadb-server.cnf into place
+    ansible.builtin.copy:
+     src: /home/instructor/lci-labs/files/mariadb-server.cnf
+     dest: /etc/my.cnf.d/

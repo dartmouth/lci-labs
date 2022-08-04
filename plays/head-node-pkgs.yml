@@ -1,5 +1,5 @@
 ---
-- hosts: all_nodes
+- hosts: head
 
   tasks:
 
@@ -9,5 +9,9 @@
 
   - name: Install dnf packages for head node
     ansible.builtin.dnf:
-      name: rpm-build,pam-devel,perl,perl-DBI,openssl-devel,readline-devel,mariadb-devel
+      name: rpm-build,pam-devel,perl,perl-DBI,openssl-devel,readline-devel,mariadb-devel,python3-PyMySQL
       state: latest
+
+  - name: Enable the ansible module community.myqsl needed for db creation
+    ansible.builtin.command:
+      cmd: ansible-galaxy collection install community.mysql

@@ -3,7 +3,6 @@
       name: munge,munge-libs,munge-devel
       state: latest
 
-
   - name: Check that the somefile.conf exists
     stat:
       path: /etc/munge/munge.key

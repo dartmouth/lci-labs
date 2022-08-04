@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+
+  tasks:
+  - name: Set up sacctmgr for class
+    ansible.builtin.command:
+      cmd: sacctmgr add account lci2022 Description="LCI 2022 workshop",sacctmgr -i create user name=mpiuser cluster=cluster account=lci2022,sacctmgr -i create user name=instructor cluster=cluster account=lci2022

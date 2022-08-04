@@ -1,13 +1,18 @@
-  - name: Install Munge needed for authentication
+  - name: Enable the powertools repo for munge-devel
+    ansible.builtin.command:
+      cmd: dnf config-manager --set-enabled powertools
+
+  - name: Install munge on compute nodes
     ansible.builtin.dnf:
-      name: munge,munge-libs,munge-devel
+      name: munge,munge-devel
       state: latest
 
-  - name: Copy mungekey with owner and permissions
+  - name: Copy mungekey with owner and permissions to the compute nodes
     ansible.builtin.copy:
      src: /etc/munge/munge.key
      dest: /etc/munge/
      owner: munge
+     group: munge
      mode: '0600'
 
   - name: Restart munge service after munge.key has been copied

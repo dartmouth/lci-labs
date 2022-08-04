@@ -1,7 +1,0 @@
-# Enable the centos7 repo for epel
-- name: Enable EPEL repo on CentOS 7 hosts
-  dnf:
-    name: epel-release
-    state: latest
-- name: Install yum & krb5 packages
-  dnf: munge munge-devel munge-libs

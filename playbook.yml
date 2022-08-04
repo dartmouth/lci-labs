@@ -1,11 +1,25 @@
 ---
+- name: Local storage configuration and export on head node
+  become: yes
+  hosts: head
+  tasks:
+
+  - name: Setup local storage and export to compute nodes
+    include_tasks: tasks/drive_nfs_setup.yml
+
+- name: Set and configure autofs on the compute nodes.
+  become: yes
+  hosts: all_nodes
+  tasks:
+
+  - name: Set and configure autofs on the compute nodes.
+    include_tasks: tasks/setup_autofs.yml
+
+
 - name: Head node configuration
   become: yes
   hosts: head
   tasks:
-    
-  - name: Step 1 Configure EPEL repo
-    include_tasks: tasks/epel.yml
 
   - name: Step 1 Configure EPEL repo
     include_tasks: tasks/epel.yml
@@ -16,14 +30,39 @@
   - name: Step 3 Setup munge
     include_tasks: tasks/munge-key-creation.yml
 
+  - name: Removing security from munge.key to copy
+    include_tasks: tasks/munge-key-unsecure.yml
+
+- name: Sync the unsecure key to compute nodes and secure it
+  become: yes
+  hosts: all_nodes
+  tasks:
+
+  - name: syncing key to compute and securing it
+    include_tasks: tasks/munge-key-sync.yml
+
+- name: Head node configuration
+  become: yes
+  hosts: head
+  tasks:
+
+  - name: securing munge.key and folder on head node after sync
+    include_tasks: tasks/munge-key-secure.yml
+
   - name: Step 4 Setup slurm user & groups on head node
     include_tasks: tasks/slurm-user.yml
-  
+
   - name: Step 5 Setup slurm log file & ownership on headnode
     include_tasks: tasks/slurm-logs.yml
 
   - name: Step 6 Build slurm rpms and install on headnode
     include_tasks: tasks/slurm-rpm-build.yml
+
+  - name: Step 6 Setup slurmdbd
+    include_tasks: tasks/slurmdbd-mysql.yml
+
+  - name: Secure mysql instance
+    include_tasks: tasks/secure-mysql.yml
 
 - name: Compute node configuration
   become: yes
@@ -35,9 +74,6 @@
 
   - name: Step 2 Install compute node packages & enable powertools repo
     include_tasks: tasks/compute-node-pkgs.yml
-
-  - name: Step 3 Install munge, sync key, and restart services
-    include_tasks: tasks/munge-key-sync.yml
 
   - name: Step 4 Setup slurm user & group
     include_tasks: tasks/slurm-user.yml
