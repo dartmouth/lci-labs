@@ -11,7 +11,7 @@
 
     - name: Copy auto.master
       ansible.builtin.copy:
-        src: /home/instructor/Ansible/Files/auto.master
+        src: /home/instructor/lci-labs/Files/auto.master
         dest: /etc/auto.master
         owner: root
         group: root
@@ -19,7 +19,7 @@
 
     - name: Copy auto.nfs
       ansible.builtin.copy:
-        src: /home/instructor/Ansible/Files/auto.nfs
+        src: /home/instructor/lci-labs/Files/auto.nfs
         dest: /etc/auto.nfs
         owner: root
         group: root
