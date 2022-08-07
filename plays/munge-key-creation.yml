@@ -1,12 +1,12 @@
 ---
-- hosts: localhost
+- hosts: head
 
   tasks:
+
   - name: Install Munge (needed for authentication)
     ansible.builtin.dnf:
       name: munge,munge-libs,munge-devel
       state: latest
-
 
   - name: Check that the somefile.conf exists
     stat:

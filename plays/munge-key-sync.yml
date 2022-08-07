@@ -1,3 +1,16 @@
+---
+- hosts: all_nodes
+  tasks:
+
+  - name: Enable the powertools repo for munge-devel
+    ansible.builtin.command:
+      cmd: dnf config-manager --set-enabled powertools
+
+  - name: Install munge on compute nodes
+    ansible.builtin.dnf:
+      name: munge,munge-devel
+      state: latest
+
   - name: Copy mungekey with owner and permissions to the compute nodes
     ansible.builtin.copy:
      src: /etc/munge/munge.key

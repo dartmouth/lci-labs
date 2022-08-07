@@ -1,9 +1,9 @@
     - name: Format and mount the drive 
       ansible.builtin.shell:
         cmd: ./format_disk.sh
-        chdir: Scripts/
+        chdir: /home/instructor/lci-labs/Scripts/
 
     - name: Configure NFS exports on the head node  
       ansible.builtin.shell:
         cmd: ./set_nfs_server.sh
-        chdir: Scripts/
+        chdir: /home/instructor/lci-labs/Scripts/

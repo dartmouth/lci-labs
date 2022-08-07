@@ -1,3 +1,8 @@
+---
+- hosts: head
+
+  tasks:
+
   - name: Give secure permissions back to /etc/munge/munge.key
     ansible.builtin.file:
       path: /etc/munge/munge.key
@@ -11,3 +16,8 @@
       owner: munge
       group: munge
       mode: '0700'
+
+  - name: Restart / Start munge
+    ansible.builtin.service:
+     name: munge
+     state: restarted

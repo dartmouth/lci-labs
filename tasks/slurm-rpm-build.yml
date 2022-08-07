@@ -2,9 +2,9 @@
     ansible.builtin.command:
       cmd: wget https://download.schedmd.com/slurm/slurm-22.05.2.tar.bz2 -P /root
 
-#  - name: build slurm rpms
-#    ansible.builtin.command:
-#      cmd: rpmbuild -ta  /root/slurm-22.05.2.tar.bz2 --with mysql
+  - name: build slurm rpms
+    ansible.builtin.command:
+      cmd: rpmbuild -ta  /root/slurm-22.05.2.tar.bz2 --with mysql
 
   - name: move compute node rpms into place to copy out
     shell: |
