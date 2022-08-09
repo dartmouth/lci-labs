@@ -1,5 +1,5 @@
 ---
-- hosts: all_nodes
+- hosts: all_nodes head
 
   tasks:
   - name: Install the EPEL repo
