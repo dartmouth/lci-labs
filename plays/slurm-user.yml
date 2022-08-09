@@ -1,7 +1,8 @@
 ---
-- hosts: localhost
+- hosts: head all_nodes
 
   tasks:
+
   - name: Create slurm group
     ansible.builtin.group:
       name: slurm

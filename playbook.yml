@@ -1,21 +1,21 @@
 ---
-- name: Local storage configuration and export on head node
-  become: yes
-  hosts: head
-  tasks:
+#- name: Local storage configuration and export on head node
+#  become: yes
+#  hosts: head
+#  tasks:
 
-  - name: Setup local storage and export to compute nodes
-    include_tasks: tasks/drive_nfs_setup.yml
+# - name: Setup local storage and export to compute nodes
+#    include_tasks: tasks/drive_nfs_setup.yml
 
-- name: Set and configure autofs on the compute nodes.
-  become: yes
-  hosts: all_nodes
-  tasks:
-
-  - name: Set and configure autofs on the compute nodes.
-    include_tasks: tasks/setup_autofs.yml
-
-
+#- name: Set and configure autofs on the compute nodes.
+#  become: yes
+#  hosts: all_nodes
+#  tasks:
+#
+#  - name: Set and configure autofs on the compute nodes.
+#    include_tasks: tasks/setup_autofs.yml
+#
+#
 - name: Head node configuration
   become: yes
   hosts: head

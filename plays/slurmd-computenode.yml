@@ -1,5 +1,5 @@
 ---
-- hosts: compute1
+- hosts: all_nodes
 
   tasks:
 
@@ -10,9 +10,9 @@
     with_items:
     - { src: '/etc/slurm/slurm.conf', dest: '/etc/slurm/' }
     - { src: '/home/instructor/lci-labs/packages/compute/slurm-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
-    - { src: '/home/instructor/lci-labs/packages/compute/slurm-libpmi-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
     - { src: '/home/instructor/lci-labs/packages/compute/slurm-perlapi-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
     - { src: '/home/instructor/lci-labs/packages/compute/slurm-slurmd-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
+    - { src: '/home/instructor/lci-labs/packages/compute/slurm-libpmi-22.05.2-1.el8.x86_64.rpm', dest: '/tmp' }
 
   - name: Install compute node RPMs
     ansible.builtin.dnf:
@@ -26,13 +26,20 @@
       state: directory
       owner: root
       group: root
-      mode: 0544
+      mode: 0755
 
-  - name: Copy slurm.conf file into place
-    ansible.builtin.copy: src=/etc/slurm/slurm.conf dest=/etc/slurm/slurm.conf
+  - name: Copy slurm.conf into place with correct permissions
+    ansible.builtin.copy:
+     src: /home/instructor/lci-labs/files/slurm.conf
+     dest: /etc/slurm/
+     owner: slurm
+     group: slurm
+     mode: '0755'
 
-  - name: Copy slurm.conf file into place
-    ansible.builtin.copy: src=/etc/slurm/cgroup.conf dest=/etc/slurm/cgroup.conf
+  - name: Copy cgroup.conf into place with correct permissions
+    ansible.builtin.copy:
+     src: /home/instructor/lci-labs/files/cgroup.conf
+     dest: /etc/slurm/
 
   - name: Restart slurmd service
     ansible.builtin.service:

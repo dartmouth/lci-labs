@@ -1,7 +1,8 @@
 ---
-- hosts: localhost
+- hosts: head
 
   tasks:
+
   - name: Create & change ownership of /var/spool/slurm directory
     file:
       path: /var/spool/slurm
@@ -17,6 +18,13 @@
       owner: slurm
       group: slurm
       mode: 0755
+
+  - name: Create /var/spool/slurm/cluster_state directory
+    file:
+      path: /var/spool/slurm/cluster_state
+      state: directory
+      owner: slurm
+      group: slurm  
 
   - name: Creating the slurmctld log file
     ansible.builtin.file:
@@ -38,12 +46,3 @@
       state: touch
       owner: slurm
       group: slurm
-
-  - name: ensure file exists
-    copy:
-      content: ""
-      dest: /etc/nologin
-      force: no
-      group: slurm
-      owner: slurm
-      mode: 0555

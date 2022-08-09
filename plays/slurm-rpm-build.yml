@@ -2,8 +2,71 @@
 - hosts: head
 
   tasks:
+  - name: pull latest version of slurm down
+    ansible.builtin.command:
+      cmd: wget https://download.schedmd.com/slurm/slurm-22.05.2.tar.bz2 -P /root
+
+#  - name: build slurm rpms
+#    ansible.builtin.command:
+#      cmd: rpmbuild -ta  /root/slurm-22.05.2.tar.bz2 --with mysql
+
+  - name: move compute node rpms into place to copy out
+    shell: |
+       cp /root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
+       cp /root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
+       cp /root/rpmbuild/RPMS/x86_64/slurm-slurmd-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
+       cp /root/rpmbuild/RPMS/x86_64/slurm-libpmi-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
+
+  - name: installing RPMS on head node
+    shell: |
+      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm
+      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-example-configs-22.05.2-1.el8.x86_64.rpm
+      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-slurmctld-22.05.2-1.el8.x86_64.rpm
+      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-slurmdbd-22.05.2-1.el8.x86_64.rpm
+      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm
+      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-libpmi-22.05.2-1.el8.x86_64.rpm
+      dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-devel-22.05.2-1.el8.x86_64.rpm
+
+  - name: Copy slurm.conf into place with correct permissions
+    ansible.builtin.copy:
+     src: /home/instructor/lci-labs/files/slurm.conf
+     dest: /etc/slurm/
+     owner: slurm
+     group: slurm
+     mode: '0755'
+
+  - name: Copy slurmdbd.conf into place with correct permissions
+    ansible.builtin.copy:
+     src: /home/instructor/lci-labs/files/slurmdbd.conf
+     dest: /etc/slurm/
+     owner: slurm
+     group: slurm
+     mode: '0600'
+
+  - name: Copy cgroup.conf into place with correct permissions
+    ansible.builtin.copy:
+     src: /home/instructor/lci-labs/files/cgroup.conf
+     dest: /etc/slurm/
+     mode: '0755'
 
   - name: Copy mariadb-server.cnf into place
     ansible.builtin.copy:
      src: /home/instructor/lci-labs/files/mariadb-server.cnf
      dest: /etc/my.cnf.d/
+     owner: root
+     group: root
+
+  - name: Restart slurmctld service
+    ansible.builtin.service:
+     name: slurmctld
+     state: restarted
+
+  - name: Restart slurmdbd service
+    ansible.builtin.service:
+     name: slurmdbd
+     state: restarted
+
+  - name: Restart mariadb service
+    ansible.builtin.service:
+     name: mariadb
+     state: restarted
