@@ -61,8 +61,8 @@
   - name: Step 6 Setup slurmdbd
     include_tasks: tasks/slurmdbd-mysql.yml
 
-  - name: Secure mysql instance
-    include_tasks: tasks/secure-mysql.yml
+#  - name: Secure mysql instance
+#    include_tasks: tasks/secure-mysql.yml
 
 - name: Compute node configuration
   become: yes
