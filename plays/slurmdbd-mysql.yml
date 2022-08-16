@@ -27,6 +27,7 @@
      enabled: yes
      state: restarted
 
-  - name: Create slurm cluster name cluster
+  - name: Create slurm cluster name cluster, you may see this fail. That is OK
     ansible.builtin.command:
       cmd: sacctmgr -i add cluster cluster
+    ignore_errors: True

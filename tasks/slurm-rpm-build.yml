@@ -1,10 +1,12 @@
-  - name: pull latest version of slurm down
+  - name: Check if the slurm tar file exists
+    ansible.builtin.stat:
+      path: "/root/slurm-22.05.2.tar.bz2"
+    register: file_tar
+
+  - name: If it does not exist, pull latest version of slurm down
     ansible.builtin.command:
       cmd: wget https://download.schedmd.com/slurm/slurm-22.05.2.tar.bz2 -P /root
-
-#  - name: build slurm rpms
-#    ansible.builtin.command:
-#      cmd: rpmbuild -ta  /root/slurm-22.05.2.tar.bz2 --with mysql
+    when: not file_tar.stat.exists
 
   - name: move compute node rpms into place to copy out
     shell: |
