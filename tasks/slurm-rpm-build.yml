@@ -8,6 +8,10 @@
       cmd: wget https://download.schedmd.com/slurm/slurm-22.05.2.tar.bz2 -P /root
     when: not file_tar.stat.exists
 
+  - name: build slurm rpms
+    ansible.builtin.command:
+      cmd: rpmbuild -ta  /root/slurm-22.05.2.tar.bz2 --with mysql
+
   - name: move compute node rpms into place to copy out
     shell: |
        cp /root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/

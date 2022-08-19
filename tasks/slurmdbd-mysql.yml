@@ -25,3 +25,4 @@
   - name: Create slurm cluster name cluster
     ansible.builtin.command:
       cmd: sacctmgr -i add cluster cluster
+    ignore_errors: True
