@@ -6,7 +6,8 @@
 
 Disk_size='50 GiB'
 
-if [ -d /head/NFS ]
+ismounted=$(df -h | grep '/head/NFS')
+if [ !-z ${ismounted} ]
 then
   umount /head/NFS
 fi
@@ -18,7 +19,7 @@ sfdisk ${disk} < partitions.txt
 uuid=$(blkid ${disk}1 | cut -d' ' -f2)
 ftype=$(blkid ${disk}1 | cut -d' ' -f4)
 
-if [ ${ftype} != 'TYPE="ext4"' ]
+if [ -z ${ftype} ] || [ ${ftype} != 'TYPE="ext4"' ]
 then
  mke2fs -t ext4 ${disk}1
 fi
