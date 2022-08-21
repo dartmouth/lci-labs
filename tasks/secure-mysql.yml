@@ -3,13 +3,13 @@
      src: /home/instructor/lci-labs/files/mariadb-server.cnf
      dest: /etc/my.cnf.d/
 
-  - name: delete anonymous MySQL server user for {{ ansible_hostname }}
+  - name: Delete the anonymous MySQL server user for {{ ansible_hostname }}
     community.mysql.mysql_user:
       name: ''
       host: localhost
       state: absent
 
-  - name: remove the MySQL test database
+  - name: Remove the MySQL test database
     community.mysql.mysql_db:
       name: test
       state: absent
