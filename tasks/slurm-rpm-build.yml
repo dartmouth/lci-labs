@@ -1,4 +1,4 @@
-  - name: Check if the slurm tar file exists
+  - name: Checking to see if the slurm .tar.bz2 file exists
     ansible.builtin.stat:
       path: "/root/slurm-22.05.2.tar.bz2"
     register: file_tar
@@ -8,18 +8,24 @@
       cmd: wget https://download.schedmd.com/slurm/slurm-22.05.2.tar.bz2 -P /root
     when: not file_tar.stat.exists
 
-  - name: build slurm rpms
+  - name: Checking to see if the slurm rpms have already been created
+    ansible.builtin.stat:
+      path: "/root/rpmbuild/RPMS/x86_64/slurm-example-configs-22.05.2-1.el8.x86_64.rpm"
+    register: file_rpm
+
+  - name: Building slurm rpms -- this will skip if they are already built
     ansible.builtin.command:
       cmd: rpmbuild -ta  /root/slurm-22.05.2.tar.bz2 --with mysql
+    when: not file_rpm.stat.exists
 
-  - name: move compute node rpms into place to copy out
+  - name: Moving compute node rpms into a place we can copy to the compute node
     shell: |
        cp /root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
        cp /root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
        cp /root/rpmbuild/RPMS/x86_64/slurm-slurmd-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
        cp /root/rpmbuild/RPMS/x86_64/slurm-libpmi-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
 
-  - name: installing RPMS on head node
+  - name: Installing the slurm RPMS on head node
     shell: |
       dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm
       dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-example-configs-22.05.2-1.el8.x86_64.rpm
@@ -29,7 +35,7 @@
       dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-libpmi-22.05.2-1.el8.x86_64.rpm
       dnf localinstall -y /root/rpmbuild/RPMS/x86_64/slurm-devel-22.05.2-1.el8.x86_64.rpm
 
-  - name: Copy slurm.conf into place with correct permissions
+  - name: Copying slurm.conf into place with correct permissions
     ansible.builtin.copy:
      src: /home/instructor/lci-labs/files/slurm.conf
      dest: /etc/slurm/
@@ -37,7 +43,7 @@
      group: slurm
      mode: '0755'
 
-  - name: Copy slurmdbd.conf into place with correct permissions
+  - name: Copying slurmdbd.conf into place with correct permissions
     ansible.builtin.copy:
      src: /home/instructor/lci-labs/files/slurmdbd.conf
      dest: /etc/slurm/
@@ -45,13 +51,13 @@
      group: slurm
      mode: '0600'
 
-  - name: Copy cgroup.conf into place with correct permissions
+  - name: Copying cgroup.conf into place with correct permissions
     ansible.builtin.copy:
      src: /home/instructor/lci-labs/files/cgroup.conf
      dest: /etc/slurm/
      mode: '0755'
 
-  - name: Copy mariadb-server.cnf into place
+  - name: Copying mariadb-server.cnf into place
     ansible.builtin.copy:
      src: /home/instructor/lci-labs/files/mariadb-server.cnf
      dest: /etc/my.cnf.d/
