@@ -1,4 +1,4 @@
-  - name: Copy compute node RPMs
+  - name: Copy compute node RPMs to /tmp
     ansible.builtin.copy: src={{ item.src }} dest={{ item.dest}}
     become: yes
     become_user: root
