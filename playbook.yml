@@ -30,7 +30,7 @@
   - name: Step 3 Setup munge
     include_tasks: tasks/munge-key-creation.yml
 
-  - name: Removing security from munge.key to copy
+  - name: Remove security from munge.key to move to copy to compute nodes
     include_tasks: tasks/munge-key-unsecure.yml
 
 - name: Sync the unsecure key to compute nodes and secure it
@@ -38,7 +38,7 @@
   hosts: all_nodes
   tasks:
 
-  - name: syncing key to compute and securing it
+  - name: Syncing...
     include_tasks: tasks/munge-key-sync.yml
 
 - name: Head node configuration
@@ -46,19 +46,19 @@
   hosts: head
   tasks:
 
-  - name: securing munge.key and folder on head node after sync
+  - name: Restore permission to /etc/munge and /etc/munge/munge.key on the head node
     include_tasks: tasks/munge-key-secure.yml
 
   - name: Step 4 Setup slurm user & groups on head node
     include_tasks: tasks/slurm-user.yml
 
-  - name: Step 5 Setup slurm log file & ownership on headnode
+  - name: Step 5 Setup slurm log files on headnode
     include_tasks: tasks/slurm-logs.yml
 
   - name: Step 6 Build slurm rpms and install on headnode
     include_tasks: tasks/slurm-rpm-build.yml
 
-  - name: Step 6 Setup slurmdbd
+  - name: Step 7 Setup slurmdbd
     include_tasks: tasks/slurmdbd-mysql.yml
 
 #  - name: Secure mysql instance
@@ -69,14 +69,14 @@
   hosts: all_nodes
   tasks:
 
-  - name: Step 1 Configure EPEL repo
+  - name: Step 8 Configure EPEL repo
     include_tasks: tasks/epel.yml
 
-  - name: Step 2 Install compute node packages & enable powertools repo
+  - name: Step 9 Install compute node packages & enable powertools repo
     include_tasks: tasks/compute-node-pkgs.yml
 
-  - name: Step 4 Setup slurm user & group
+  - name: Step 10 Setup slurm user & group
     include_tasks: tasks/slurm-user.yml
 
-  - name: Step 5 Deploy & configure slurmd
+  - name: Step 11 Deploy & configure slurmd
     include_tasks: tasks/slurmd-computenode.yml
