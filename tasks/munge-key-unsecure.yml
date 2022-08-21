@@ -1,11 +1,11 @@
-  - name: unsecure permissions to /etc/munge
+  - name: Give unsecure permissions to /etc/munge
     ansible.builtin.file:
       path: /etc/munge
       owner: munge
       group: munge
       mode: '0455'
 
-  - name: unsecure permissions to /etc/munge/munge.key
+  - name: Give unsecure permissions to /etc/munge/munge.key
     ansible.builtin.file:
       path: /etc/munge/munge.key
       owner: munge
