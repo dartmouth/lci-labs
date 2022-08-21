@@ -12,11 +12,17 @@
       cmd: wget https://download.schedmd.com/slurm/slurm-22.05.2.tar.bz2 -P /root
     when: not file_tar.stat.exists
 
-#  - name: build slurm rpms
-#    ansible.builtin.command:
-#      cmd: rpmbuild -ta  /root/slurm-22.05.2.tar.bz2 --with mysql
+  - name: Checking to see if the slurm rpms have already been created
+    ansible.builtin.stat:
+      path: "/root/rpmbuild/RPMS/x86_64/slurm-example-configs-22.05.2-1.el8.x86_64.rpm"
+    register: file_rpm
 
-  - name: move compute node rpms into place to copy out
+  - name: Building slurm rpms -- this will skip if they are already built
+    ansible.builtin.command:
+      cmd: rpmbuild -ta  /root/slurm-22.05.2.tar.bz2 --with mysql
+    when: not file_rpm.stat.exists
+
+  - name: Move compute node rpms into place to copy out
     shell: |
        cp /root/rpmbuild/RPMS/x86_64/slurm-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
        cp /root/rpmbuild/RPMS/x86_64/slurm-perlapi-22.05.2-1.el8.x86_64.rpm /home/instructor/lci-labs/packages/compute/
