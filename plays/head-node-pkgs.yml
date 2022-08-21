@@ -3,15 +3,23 @@
 
   tasks:
 
-  - name: Enable the powertools repo
+  - name: Enable the powertools repo on the head node
     ansible.builtin.command:
       cmd: dnf config-manager --set-enabled powertools
 
-  - name: Install dnf packages for head node
+  - name: Install dnf packages on head node
     ansible.builtin.dnf:
-      name: rpm-build,pam-devel,perl,perl-DBI,openssl-devel,readline-devel,mariadb-devel,python3-PyMySQL
+      name: gcc,wget,rpm-build,pam-devel,perl,perl-DBI,openssl-devel,readline-devel,mariadb-devel,python3-PyMySQL,mariadb-server
       state: latest
 
-  - name: Enable the ansible module community.myqsl needed for db creation
-    ansible.builtin.command:
-      cmd: ansible-galaxy collection install community.mysql
+  - name:
+    ansible.builtin.systemd:
+      state: stopped
+      name: mariadb
+
+
+  - name: Ensure mariadb service is running
+    ansible.builtin.systemd:
+      state: started
+      name: mariadb
+      enabled: yes
