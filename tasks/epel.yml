@@ -1,8 +1,8 @@
-  - name: 
+  - name: Enable the EPEL repo
     ansible.builtin.dnf:
       name: epel-release
       state: latest
 
-  - name: ensure time zones are in sync
+  - name: Ensure time zones are in sync
     ansible.builtin.command:
       cmd: timedatectl set-timezone EST
