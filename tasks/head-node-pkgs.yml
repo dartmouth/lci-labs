@@ -7,6 +7,11 @@
       name: gcc,wget,rpm-build,pam-devel,perl,perl-DBI,openssl-devel,readline-devel,mariadb-devel,python3-PyMySQL,mariadb-server
       state: latest
 
+  - name:
+    ansible.builtin.systemd:
+      state: stopped
+      name: mariadb
+
   - name: Ensure mariadb service is running
     ansible.builtin.systemd:
       state: started
