@@ -1,4 +1,4 @@
-  - name: Powertools repo
+  - name: Enable the powertools repo
     ansible.builtin.command:
       cmd: dnf config-manager --set-enabled powertools
 
