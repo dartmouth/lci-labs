@@ -21,21 +21,21 @@
       owner: slurm
       group: slurm  
 
-  - name: Creating the slurmctld log file
+  - name: Create the slurmctld log file
     ansible.builtin.file:
       path: /var/log/slurmctld
       state: touch
       owner: slurm
       group: slurm 
 
-  - name: Creating the slurm job_acct log file
+  - name: Create the slurm job_acct log file
     ansible.builtin.file:
       path: /var/log/slurm_jobacct.log
       state: touch
       owner: slurm
       group: slurm
 
-  - name: Creating the slurm jobcomp log file
+  - name: Create the slurm jobcomp log file
     ansible.builtin.file:
       path: /var/log/slurm_jobcomp.log
       state: touch
